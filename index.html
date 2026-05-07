@@ -44,15 +44,16 @@ a{text-decoration:none;color:inherit}
    CUSTOM CURSOR
 ════════════════════════════════════════ */
 #cursor{
-  position:fixed;width:12px;height:12px;border-radius:50%;
+  position:fixed;left:0;top:0;width:12px;height:12px;border-radius:50%;
   background:var(--y);pointer-events:none;z-index:99999;
   transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;
-  mix-blend-mode:exclusion;
+  mix-blend-mode:exclusion;will-change:left,top;
 }
 #cursor-ring{
-  position:fixed;width:40px;height:40px;border-radius:50%;
+  position:fixed;left:0;top:0;width:40px;height:40px;border-radius:50%;
   border:1.5px solid rgba(240,165,0,.5);pointer-events:none;z-index:99998;
   transform:translate(-50%,-50%);transition:width .3s,height .3s,border-color .3s;
+  will-change:left,top;
 }
 body:has(a:hover) #cursor,body:has(button:hover) #cursor{width:20px;height:20px}
 body:has(a:hover) #cursor-ring,body:has(button:hover) #cursor-ring{width:60px;height:60px;border-color:rgba(240,165,0,.8)}
@@ -87,7 +88,7 @@ nav.scrolled{
   max-width:1160px;margin:0 auto;height:76px;
   display:flex;align-items:center;justify-content:space-between;gap:24px;
 }
-.nav-logo img{height:48px;width:auto}
+.nav-logo img{height:60px;width:auto;filter:drop-shadow(0 2px 12px rgba(0,0,0,.3))}
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{
   color:rgba(255,255,255,.65);font-size:.88rem;font-weight:600;
@@ -712,11 +713,8 @@ footer{
   padding:72px 32px 36px;
 }
 .footer-inner{max-width:1160px;margin:0 auto}
-.footer-top{
-  display:grid;grid-template-columns:1.8fr 1fr 1fr;
-  gap:56px;margin-bottom:56px;
-}
-.footer-logo img{height:56px;width:auto;margin-bottom:16px}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:48px;padding:64px 0 48px;align-items:start;}
+.footer-logo img{height:64px;width:auto;margin-bottom:16px;filter:drop-shadow(0 2px 16px rgba(0,0,0,.4))}
 .footer-desc{font-size:.85rem;color:rgba(255,255,255,.4);line-height:1.75;margin-bottom:24px}
 .footer-contacts a{
   display:flex;align-items:center;gap:10px;
@@ -727,14 +725,16 @@ footer{
 .footer-col h4{
   font-size:.72rem;font-weight:800;letter-spacing:.12em;
   text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:20px;
+  text-align:left;
 }
 .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
 .footer-col ul a{color:rgba(255,255,255,.45);font-size:.85rem;transition:color .2s}
 .footer-col ul a:hover{color:#fff}
 .footer-bottom{
   border-top:1px solid rgba(255,255,255,.05);padding-top:28px;
-  display:flex;justify-content:space-between;align-items:center;
-  flex-wrap:wrap;gap:14px;font-size:.79rem;color:rgba(255,255,255,.25);
+  display:flex;justify-content:center;align-items:center;
+  flex-wrap:wrap;gap:20px;font-size:.79rem;color:rgba(255,255,255,.25);
+  text-align:center;
 }
 .footer-legal{display:flex;gap:20px}
 .footer-legal a{color:rgba(255,255,255,.25);transition:color .2s}
@@ -758,6 +758,32 @@ footer{
   background:inherit;animation:wa-pulse 2.5s ease-out infinite;z-index:-1;
 }
 @keyframes wa-pulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.8);opacity:0}}
+
+/* ════════════════════════════════════════
+   SCROLL SPOTLIGHT PILLS (right side)
+════════════════════════════════════════ */
+.scroll-spotlight{
+  position:fixed;right:20px;top:50%;transform:translateY(-50%);
+  z-index:8900;display:flex;flex-direction:column;gap:10px;
+  pointer-events:none;
+}
+.ss-pill{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(7,14,26,.88);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.1);border-radius:50px;
+  padding:10px 16px 10px 12px;color:#fff;
+  pointer-events:all;cursor:pointer;
+  opacity:0;transform:translateX(40px);
+  transition:opacity .35s ease, transform .35s ease, background .2s, border-color .2s;
+  white-space:nowrap;
+}
+.ss-pill.visible{opacity:1;transform:translateX(0)}
+.ss-pill:hover{background:rgba(26,107,53,.7);border-color:rgba(26,107,53,.6)}
+.ss-pill-icon{font-size:1.1rem;line-height:1}
+.ss-pill-text{display:flex;flex-direction:column;line-height:1.2}
+.ss-pill-text strong{font-size:.78rem;font-weight:700}
+.ss-pill-text span{font-size:.68rem;color:rgba(255,255,255,.5)}
+@media(max-width:768px){.scroll-spotlight{display:none}}
 
 /* Mobile sticky CTA */
 .mobile-cta{
@@ -791,7 +817,8 @@ footer{
   .steps-grid{grid-template-columns:1fr;gap:32px}
   .connector-svg{display:none}
   .stats-inner{grid-template-columns:repeat(2,1fr)}
-  .footer-top{grid-template-columns:1fr 1fr;gap:36px}
+  .footer-top{grid-template-columns:1fr 1fr;gap:36px;text-align:center}
+  .footer-contacts a{justify-content:center}
   .nav-links,.nav-cta{display:none}
   body{cursor:auto}
   #cursor,#cursor-ring{display:none}
@@ -802,7 +829,9 @@ footer{
   .nav-inner{height:60px}
   .hero-btns{flex-direction:column}
   .btn-xl{width:100%}
-  .footer-top{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr;gap:32px;text-align:center}
+  .footer-contacts a{justify-content:center}
+  .footer-col ul{align-items:center}
   .stats-inner{grid-template-columns:repeat(2,1fr)}
   .form-grid{grid-template-columns:1fr}
   .form-body{padding:24px 20px}
@@ -823,7 +852,7 @@ footer{
 <!-- ══════════ NAV ══════════ -->
 <nav id="navbar">
   <div class="nav-inner">
-    <a href="#"><img src="PortaLuso.png" alt="PortaLuso" style="height:46px;width:auto;object-fit:contain"/></a>
+    <a href="#"><img src="PortaLuso-removebg-preview.png" alt="PortaLuso" style="height:60px;width:auto;object-fit:contain"/></a>
     <ul class="nav-links">
       <li><a href="#produtos">Produtos</a></li>
       <li><a href="#passos">Como Funciona</a></li>
@@ -1340,7 +1369,7 @@ footer{
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <div class="footer-logo"><img src="PortaLuso.png" alt="PortaLuso" style="height:52px"/></div>
+        <div class="footer-logo"><img src="PortaLuso-removebg-preview.png" alt="PortaLuso" style="height:64px"/></div>
         <div class="footer-desc">A empresa de confiança da comunidade lusófona na Suíça há mais de 16 anos. Crédito, seguros e serviços em português.</div>
         <div class="footer-contacts">
           <a href="https://wa.me/41767666980" target="_blank">💬 +41 76 766 69 80</a>
@@ -1348,9 +1377,30 @@ footer{
           <a href="https://www.portaluso.org" target="_blank">🌐 www.portaluso.org</a>
         </div>
       </div>
-      <div class="footer-col"><h4>Produtos</h4><ul><li><a href="#produtos">Crédito Pessoal</a></li><li><a href="#produtos">Seguros Auto</a></li><li><a href="#produtos">Seguro Saúde</a></li><li><a href="#produtos">Proteção Jurídica</a></li><li><a href="#produtos">Serviços & Impostos</a></li></ul></div>
-      <div class="footer-col"><h4>Empresa</h4><ul><li><a href="#porquenos">Sobre Nós</a></li><li><a href="#passos">Como Funciona</a></li><li><a href="#faq">FAQ</a></li><li><a href="#contacto">Contacto</a></li></ul></div>
+
       </div>
+
+      <div class="footer-col">
+        <h4>Produtos</h4>
+        <ul>
+          <li><a href="#contacto">Crédito Pessoal</a></li>
+          <li><a href="#contacto">Seguros Auto</a></li>
+          <li><a href="#contacto">Seguro Saúde</a></li>
+          <li><a href="#contacto">Proteção Jurídica</a></li>
+          <li><a href="#contacto">Serviços & Impostos</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#porquenos">Sobre Nós</a></li>
+          <li><a href="#passos">Como Funciona</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+
     <div class="footer-bottom">
       <span>© 2026 PortaLuso. Todos os direitos reservados.</span>
       <div class="footer-legal"><a href="#">Privacidade</a><a href="#">Termos</a><a href="#">Aviso Legal</a></div>
@@ -1395,26 +1445,29 @@ window.addEventListener('error', function(e){
   }
 }, true);
 
+// ── Custom cursor — usa left/top, sem conflito com CSS transform
+(function(){
+  var cur = document.getElementById('cursor');
+  var ring = document.getElementById('cursor-ring');
+  if(!cur || !ring){ document.body.style.cursor='auto'; return; }
+  var mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', function(e){
+    mx = e.clientX; my = e.clientY;
+    cur.style.left = mx+'px';
+    cur.style.top  = my+'px';
+  }, {passive:true});
+  (function loop(){
+    rx += (mx-rx)*.12; ry += (my-ry)*.12;
+    ring.style.left = rx+'px';
+    ring.style.top  = ry+'px';
+    requestAnimationFrame(loop);
+  })();
+})();
+
 if(typeof gsap === 'undefined'){ console.warn('GSAP not loaded'); }
 else {
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin);
-
-// ── Custom cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
-let mouseX=0,mouseY=0,ringX=0,ringY=0;
-document.addEventListener('mousemove', e => {
-  mouseX = e.clientX; mouseY = e.clientY;
-  gsap.to(cursor, {x:mouseX, y:mouseY, duration:.1});
-});
-function animateRing(){
-  ringX += (mouseX - ringX) * .12;
-  ringY += (mouseY - ringY) * .12;
-  gsap.set(ring, {x:ringX, y:ringY});
-  requestAnimationFrame(animateRing);
-}
-animateRing();
 
 // ── Hero entrance — FROM (elementos começam visíveis, animam a partir do estado oculto)
 const tl = gsap.timeline({defaults:{ease:'power3.out'}});
@@ -1631,15 +1684,7 @@ document.getElementById('f-tempo').addEventListener('change', function(){
   if(w){ w.style.display = this.value === 'menos2' ? 'block' : 'none'; }
 });
 
-// ── Pcard-cta fix: make arrows look right
-document.querySelectorAll('.pcard-cta').forEach(el => {
-  el.style.display = 'inline-flex';
-  el.style.alignItems = 'center';
-  el.style.gap = '6px';
-});
-
-
-// ── MOBILE NAV AUTO-HIDE ──────────────────────────────
+// ── MOBILE NAV AUTO-HIDE
 (function(){
   var nav = document.querySelector('nav');
   var lastY = 0;
@@ -1650,11 +1695,8 @@ document.querySelectorAll('.pcard-cta').forEach(el => {
     requestAnimationFrame(function(){
       var y = window.scrollY;
       if(window.innerWidth <= 1024){
-        if(y > lastY && y > 80){
-          nav.classList.add('nav-up');
-        } else {
-          nav.classList.remove('nav-up');
-        }
+        if(y > lastY && y > 80){ nav.classList.add('nav-up'); }
+        else { nav.classList.remove('nav-up'); }
       }
       lastY = y;
       ticking = false;
@@ -1662,22 +1704,20 @@ document.querySelectorAll('.pcard-cta').forEach(el => {
   }, {passive:true});
 })();
 
-// ── MOBILE CTA REVEAL AFTER HERO ─────────────────────
+// ── MOBILE CTA REVEAL AFTER HERO
 (function(){
   var mCta = document.querySelector('.mobile-cta');
   var hero = document.querySelector('.hero');
   if(!mCta || !hero) return;
   var obs = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
-      if(!e.isIntersecting){
-        mCta.classList.add('visible');
-      } else {
-        mCta.classList.remove('visible');
-      }
+      if(!e.isIntersecting){ mCta.classList.add('visible'); }
+      else { mCta.classList.remove('visible'); }
     });
   }, {threshold: 0.05});
   obs.observe(hero);
 })();
+
 </script>
 </body>
 </html>
